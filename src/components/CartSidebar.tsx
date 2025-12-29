@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/CartContext';
@@ -9,7 +10,8 @@ interface CartSidebarProps {
 }
 
 const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
-  const { cart, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart();
+  const navigate = useNavigate();
+  const { cart, removeFromCart, updateQuantity, getTotalPrice } = useCart();
 
   const handleCheckout = () => {
     if (cart.length === 0) {
@@ -20,12 +22,8 @@ const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
       });
       return;
     }
-    toast({
-      title: "Order Placed!",
-      description: "Thank you for your purchase. Your order is being processed.",
-    });
-    clearCart();
     onClose();
+    navigate('/checkout');
   };
 
   return (
