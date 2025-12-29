@@ -17,15 +17,15 @@ switch ($method) {
     case 'GET':
         getCart($db, $sessionId);
         break;
-    
+
     case 'POST':
         addToCart($db, $sessionId);
         break;
-    
+
     case 'PUT':
         updateCartItem($db, $sessionId);
         break;
-    
+
     case 'DELETE':
         if (isset($_GET['id'])) {
             removeFromCart($db, $sessionId, $_GET['id']);
@@ -33,30 +33,31 @@ switch ($method) {
             clearCart($db, $sessionId);
         }
         break;
-    
+
     default:
         http_response_code(405);
         echo json_encode(["error" => "Method not allowed"]);
         break;
 }
 
-function getCart($db, $sessionId) {
+function getCart($db, $sessionId)
+{
     try {
         $query = "SELECT c.id as cart_id, c.quantity, p.* 
                   FROM cart c 
                   JOIN products p ON c.product_id = p.id 
                   WHERE c.session_id = :session_id";
-        
+
         $stmt = $db->prepare($query);
         $stmt->bindParam(':session_id', $sessionId);
         $stmt->execute();
-        
+
         $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         $cart = [];
         $totalPrice = 0;
         $totalItems = 0;
-        
+
         foreach ($items as $item) {
             $cartItem = [
                 'id' => intval($item['id']),
@@ -72,7 +73,7 @@ function getCart($db, $sessionId) {
             $totalPrice += $cartItem['price'] * $cartItem['quantity'];
             $totalItems += $cartItem['quantity'];
         }
-        
+
         echo json_encode([
             'items' => $cart,
             'totalPrice' => $totalPrice,
@@ -85,21 +86,22 @@ function getCart($db, $sessionId) {
     }
 }
 
-function addToCart($db, $sessionId) {
+function addToCart($db, $sessionId)
+{
     try {
         $data = json_decode(file_get_contents("php://input"), true);
         $productId = $data['product_id'];
         $quantity = isset($data['quantity']) ? $data['quantity'] : 1;
-        
+
         // Check if item already exists in cart
         $checkQuery = "SELECT * FROM cart WHERE session_id = :session_id AND product_id = :product_id";
         $checkStmt = $db->prepare($checkQuery);
         $checkStmt->bindParam(':session_id', $sessionId);
         $checkStmt->bindParam(':product_id', $productId);
         $checkStmt->execute();
-        
+
         $existing = $checkStmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if ($existing) {
             // Update quantity
             $newQuantity = $existing['quantity'] + $quantity;
@@ -117,7 +119,7 @@ function addToCart($db, $sessionId) {
             $insertStmt->bindParam(':quantity', $quantity);
             $insertStmt->execute();
         }
-        
+
         echo json_encode([
             "message" => "Item added to cart",
             "sessionId" => $sessionId
@@ -128,26 +130,27 @@ function addToCart($db, $sessionId) {
     }
 }
 
-function updateCartItem($db, $sessionId) {
+function updateCartItem($db, $sessionId)
+{
     try {
         $data = json_decode(file_get_contents("php://input"), true);
         $productId = $data['product_id'];
         $quantity = $data['quantity'];
-        
+
         if ($quantity <= 0) {
             // Remove item if quantity is 0 or less
             removeFromCart($db, $sessionId, $productId);
             return;
         }
-        
+
         $query = "UPDATE cart SET quantity = :quantity 
                   WHERE session_id = :session_id AND product_id = :product_id";
-        
+
         $stmt = $db->prepare($query);
         $stmt->bindParam(':quantity', $quantity);
         $stmt->bindParam(':session_id', $sessionId);
         $stmt->bindParam(':product_id', $productId);
-        
+
         if ($stmt->execute()) {
             echo json_encode(["message" => "Cart updated successfully"]);
         }
@@ -157,13 +160,14 @@ function updateCartItem($db, $sessionId) {
     }
 }
 
-function removeFromCart($db, $sessionId, $productId) {
+function removeFromCart($db, $sessionId, $productId)
+{
     try {
         $query = "DELETE FROM cart WHERE session_id = :session_id AND product_id = :product_id";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':session_id', $sessionId);
         $stmt->bindParam(':product_id', $productId);
-        
+
         if ($stmt->execute()) {
             echo json_encode(["message" => "Item removed from cart"]);
         }
@@ -173,12 +177,13 @@ function removeFromCart($db, $sessionId, $productId) {
     }
 }
 
-function clearCart($db, $sessionId) {
+function clearCart($db, $sessionId)
+{
     try {
         $query = "DELETE FROM cart WHERE session_id = :session_id";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':session_id', $sessionId);
-        
+
         if ($stmt->execute()) {
             echo json_encode(["message" => "Cart cleared successfully"]);
         }
@@ -187,4 +192,3 @@ function clearCart($db, $sessionId) {
         echo json_encode(["error" => $e->getMessage()]);
     }
 }
-?>

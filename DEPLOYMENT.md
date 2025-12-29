@@ -6,7 +6,7 @@
 
 1. **Create Account**: Go to https://www.infinityfree.com and sign up
 2. **Create Hosting**: Click "Create Account" to get free hosting
-3. **Get Database**: 
+3. **Get Database**:
    - Go to Control Panel → MySQL Databases
    - Create a new database
    - Note down: Database name, Username, Password, Host
@@ -19,8 +19,10 @@
    - Select your database
    - Click Import → Choose `backend/sql/setup.sql`
 6. **Update Database Config**:
+
    - Edit `htdocs/config/database.php`
    - Update with your InfinityFree credentials:
+
    ```php
    private $host = "your-host.infinityfree.com";
    private $port = "3306";
@@ -34,11 +36,13 @@
 ### Step 2: Update Frontend API URL
 
 Edit `src/services/api.ts`:
+
 ```typescript
-const API_BASE_URL = 'https://your-subdomain.infinityfreeapp.com/api';
+const API_BASE_URL = "https://your-subdomain.infinityfreeapp.com/api";
 ```
 
 Then rebuild:
+
 ```bash
 npm run build
 ```
@@ -46,17 +50,20 @@ npm run build
 ### Step 3: Deploy Frontend to Vercel
 
 1. **Install Vercel CLI**:
+
    ```bash
    npm install -g vercel
    ```
 
 2. **Deploy**:
+
    ```bash
    cd "e:\versity file\6TH_SEMESTER\WEB_PROGRAMMING_LAB\online-feriyala-store-main\online-feriyala-store-main"
    vercel
    ```
 
 3. Follow the prompts:
+
    - Login with GitHub/Email
    - Set project name: `online-feriwala`
    - Framework: Vite
@@ -102,16 +109,19 @@ Note: This won't work with PHP backend. Use for demo only.
 ## Quick Deploy Commands
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
 
 ### Deploy to Vercel
+
 ```bash
 npx vercel --prod
 ```
 
 ### Deploy to Netlify
+
 ```bash
 npx netlify deploy --prod --dir=dist
 ```
@@ -120,19 +130,20 @@ npx netlify deploy --prod --dir=dist
 
 ## Free Hosting Comparison
 
-| Service | Frontend | Backend (PHP) | MySQL | SSL | Bandwidth |
-|---------|----------|---------------|-------|-----|-----------|
-| Vercel | ✅ | ❌ | ❌ | ✅ | 100GB |
-| Netlify | ✅ | ❌ | ❌ | ✅ | 100GB |
-| InfinityFree | ✅ | ✅ | ✅ | ✅ | Unlimited |
-| 000webhost | ✅ | ✅ | ✅ | ✅ | 3GB |
-| GitHub Pages | ✅ | ❌ | ❌ | ✅ | 1GB |
+| Service      | Frontend | Backend (PHP) | MySQL | SSL | Bandwidth |
+| ------------ | -------- | ------------- | ----- | --- | --------- |
+| Vercel       | ✅       | ❌            | ❌    | ✅  | 100GB     |
+| Netlify      | ✅       | ❌            | ❌    | ✅  | 100GB     |
+| InfinityFree | ✅       | ✅            | ✅    | ✅  | Unlimited |
+| 000webhost   | ✅       | ✅            | ✅    | ✅  | 3GB       |
+| GitHub Pages | ✅       | ❌            | ❌    | ✅  | 1GB       |
 
 ---
 
 ## Recommended Setup
 
 **Best Free Full-Stack Setup:**
+
 - Frontend: **Vercel** (fast, reliable, free SSL)
 - Backend: **InfinityFree** (free PHP + MySQL, unlimited bandwidth)
 

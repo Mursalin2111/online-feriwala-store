@@ -3,25 +3,30 @@ import ProductCard from './ProductCard';
 import { Button } from '@/components/ui/button';
 import { productApi, categoryApi } from '@/services/api';
 import { Product } from '@/context/CartContext';
+import { products as staticProducts, categories as staticCategories } from '@/data/products';
 
 const ProductGrid = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>(['All']);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fetch products from API
+  // Fetch products from API, fallback to static data
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         const data = await productApi.getAll();
-        setProducts(data);
-        setError(null);
+        if (data && data.length > 0) {
+          setProducts(data);
+        } else {
+          // Fallback to static data
+          setProducts(staticProducts);
+        }
       } catch (err) {
-        setError('Failed to load products');
-        console.error(err);
+        // API failed, use static data
+        console.log('Using static product data');
+        setProducts(staticProducts);
       } finally {
         setLoading(false);
       }
@@ -30,9 +35,14 @@ const ProductGrid = () => {
     const fetchCategories = async () => {
       try {
         const data = await categoryApi.getAll();
-        setCategories(data);
+        if (data && data.length > 0) {
+          setCategories(data);
+        } else {
+          setCategories(staticCategories);
+        }
       } catch (err) {
-        console.error('Failed to load categories:', err);
+        // Fallback to static categories
+        setCategories(staticCategories);
       }
     };
 
@@ -57,19 +67,6 @@ const ProductGrid = () => {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section id="products" className="py-16 lg:py-24">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-destructive">{error}</p>
-          <Button onClick={() => window.location.reload()} className="mt-4">
-            Retry
-          </Button>
         </div>
       </section>
     );

@@ -10,7 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-class Database {
+class Database
+{
     private $host = "localhost";
     private $port = "4306";
     private $database_name = "online_feriwala";
@@ -18,7 +19,8 @@ class Database {
     private $password = "";
     public $conn;
 
-    public function getConnection() {
+    public function getConnection()
+    {
         $this->conn = null;
 
         try {
@@ -29,7 +31,7 @@ class Database {
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->exec("set names utf8");
-        } catch(PDOException $exception) {
+        } catch (PDOException $exception) {
             echo json_encode(["error" => "Connection error: " . $exception->getMessage()]);
             exit();
         }
@@ -37,4 +39,3 @@ class Database {
         return $this->conn;
     }
 }
-?>
