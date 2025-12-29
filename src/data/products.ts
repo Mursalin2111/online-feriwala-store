@@ -13,7 +13,7 @@ export const products: Product[] = [
     id: 2,
     name: "Organic Honey Jar",
     price: 350,
-    image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&h=400&fit=crop",
+    image: "/Honey_Jar.jpg",
     category: "Food",
     description: "Pure, raw organic honey collected from the Sundarbans region of Bangladesh. This golden nectar is unprocessed and unpasteurized, retaining all its natural enzymes, vitamins, and antioxidants. Great for immunity boosting, natural sweetening, and traditional remedies. Weight: 500g. No added preservatives or artificial colors."
   },
