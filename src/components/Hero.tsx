@@ -39,15 +39,15 @@ const Hero = () => {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-8 mt-16 py-8 px-6 bg-secondary/60 rounded-2xl animate-fade-up" style={{ animationDelay: '0.4s' }}>
             <div>
-              <p className="text-2xl md:text-3xl font-display font-bold text-primary">500+</p>
+              <p className="text-2xl md:text-3xl font-display font-bold text-primary">10+</p>
               <p className="text-sm text-muted-foreground">Products</p>
             </div>
             <div>
-              <p className="text-2xl md:text-3xl font-display font-bold text-primary">200+</p>
+              <p className="text-2xl md:text-3xl font-display font-bold text-primary">5+</p>
               <p className="text-sm text-muted-foreground">Artisans</p>
             </div>
             <div>
-              <p className="text-2xl md:text-3xl font-display font-bold text-primary">50K+</p>
+              <p className="text-2xl md:text-3xl font-display font-bold text-primary">100+</p>
               <p className="text-sm text-muted-foreground">Happy Customers</p>
             </div>
           </div>
