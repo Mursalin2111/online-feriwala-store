@@ -5,7 +5,7 @@ export const products: Product[] = [
     id: 1,
     name: "Handwoven Basket",
     price: 450,
-    image: "https://images.unsplash.com/photo-1595231776515-ddffb1f4eb73?w=400&h=400&fit=crop",
+    image: "/basket.jpg",
     category: "Crafts",
     description: "This beautiful handwoven basket is crafted by skilled artisans using 100% natural materials including jute, cane, and bamboo. Perfect for home decor, storage, or as a unique gift. Each piece is one-of-a-kind with slight variations that make it truly special. Dimensions: 12\" x 10\" x 8\". Eco-friendly and sustainably sourced."
   },
